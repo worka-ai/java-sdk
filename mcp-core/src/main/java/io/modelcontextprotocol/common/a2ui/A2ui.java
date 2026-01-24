@@ -33,7 +33,7 @@ public final class A2ui {
     }
 
     public static Map<String, Object> stringArrayRefLiteral(List<String> values) {
-        return mapOf("literalArray", values);
+        return mapOf("literalStringArray", values);
     }
 
     public static Map<String, Object> stringArrayRefPath(String path) {
