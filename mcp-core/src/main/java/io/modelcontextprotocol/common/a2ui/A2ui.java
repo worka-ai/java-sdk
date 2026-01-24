@@ -258,6 +258,86 @@ public final class A2ui {
         return component(id, "DateTimeInput", props, null);
     }
 
+    public static Map<String, Object> timeline(
+        String id,
+        Map<String, Object> children,
+        String orientation,
+        String alignment,
+        Map<String, Object> autoFollow,
+        String laneMode,
+        Map<String, Object> currentItemId
+    ) {
+        Map<String, Object> props = new LinkedHashMap<>();
+        props.put("children", children);
+        if (orientation != null && !orientation.isEmpty()) { props.put("orientation", orientation); }
+        if (alignment != null && !alignment.isEmpty()) { props.put("alignment", alignment); }
+        if (autoFollow != null) { props.put("autoFollow", autoFollow); }
+        if (laneMode != null && !laneMode.isEmpty()) { props.put("laneMode", laneMode); }
+        if (currentItemId != null) { props.put("currentItemId", currentItemId); }
+        return component(id, "Timeline", props, null);
+    }
+
+    public static Map<String, Object> timelineItem(
+        String id,
+        String itemId,
+        Map<String, Object> title,
+        Map<String, Object> subtitle,
+        Map<String, Object> timestamp,
+        String kind,
+        String state,
+        String severity,
+        Map<String, Object> icon,
+        String contentChild,
+        Map<String, Object> action
+    ) {
+        Map<String, Object> props = new LinkedHashMap<>();
+        if (itemId != null && !itemId.isEmpty()) { props.put("itemId", itemId); }
+        if (title != null) { props.put("title", title); }
+        if (subtitle != null) { props.put("subtitle", subtitle); }
+        if (timestamp != null) { props.put("timestamp", timestamp); }
+        if (kind != null && !kind.isEmpty()) { props.put("kind", kind); }
+        if (state != null && !state.isEmpty()) { props.put("state", state); }
+        if (severity != null && !severity.isEmpty()) { props.put("severity", severity); }
+        if (icon != null) { props.put("icon", icon); }
+        if (contentChild != null && !contentChild.isEmpty()) { props.put("contentChild", contentChild); }
+        if (action != null) { props.put("action", action); }
+        return component(id, "TimelineItem", props, null);
+    }
+
+    public static Map<String, Object> timelineGroup(
+        String id,
+        String groupId,
+        Map<String, Object> title,
+        Map<String, Object> summary,
+        Map<String, Object> children,
+        Map<String, Object> collapsed,
+        Map<String, Object> badgeCount,
+        String groupState
+    ) {
+        Map<String, Object> props = new LinkedHashMap<>();
+        if (groupId != null && !groupId.isEmpty()) { props.put("groupId", groupId); }
+        if (title != null) { props.put("title", title); }
+        if (summary != null) { props.put("summary", summary); }
+        if (children != null) { props.put("children", children); }
+        if (collapsed != null) { props.put("collapsed", collapsed); }
+        if (badgeCount != null) { props.put("badgeCount", badgeCount); }
+        if (groupState != null && !groupState.isEmpty()) { props.put("groupState", groupState); }
+        return component(id, "TimelineGroup", props, null);
+    }
+
+    public static Map<String, Object> timelineLane(
+        String id,
+        String laneId,
+        Map<String, Object> title,
+        Map<String, Object> children
+    ) {
+        Map<String, Object> props = new LinkedHashMap<>();
+        if (laneId != null && !laneId.isEmpty()) { props.put("laneId", laneId); }
+        if (title != null) { props.put("title", title); }
+        if (children != null) { props.put("children", children); }
+        return component(id, "TimelineLane", props, null);
+    }
+
     public static Map<String, Object> audioPlayer(String id, Map<String, Object> url) {
         return component(id, "AudioPlayer", mapOf("url", url), null);
     }

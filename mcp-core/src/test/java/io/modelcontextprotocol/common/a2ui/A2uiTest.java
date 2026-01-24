@@ -93,6 +93,52 @@ class A2uiTest {
         );
         assertEquals(parse("{\"id\":\"date\",\"component\":{\"DateTimeInput\":{\"value\":{\"path\":\"/date\"},\"enableDate\":true,\"enableTime\":false,\"firstDate\":\"2024-01-01\",\"lastDate\":\"2024-12-31\"}}}"), dateTime);
 
+        var timeline = A2ui.timeline(
+            "timeline",
+            A2ui.childrenExplicit(List.of("item-1", "item-2")),
+            "vertical",
+            "start",
+            A2ui.boolRefLiteral(true),
+            "sequential",
+            A2ui.stringRefLiteral("item-2")
+        );
+        assertEquals(parse("{\"id\":\"timeline\",\"component\":{\"Timeline\":{\"children\":{\"explicitList\":[\"item-1\",\"item-2\"]},\"orientation\":\"vertical\",\"alignment\":\"start\",\"autoFollow\":{\"literalBoolean\":true},\"laneMode\":\"sequential\",\"currentItemId\":{\"literalString\":\"item-2\"}}}}"), timeline);
+
+        var timelineItem = A2ui.timelineItem(
+            "item",
+            "item-1",
+            A2ui.stringRefLiteral("Deploy"),
+            A2ui.stringRefLiteral("Step 1"),
+            A2ui.stringRefLiteral("2024-01-01T00:00:00Z"),
+            "step",
+            "inProgress",
+            "info",
+            A2ui.stringRefLiteral("bolt"),
+            "content",
+            A2ui.action("open", List.of())
+        );
+        assertEquals(parse("{\"id\":\"item\",\"component\":{\"TimelineItem\":{\"itemId\":\"item-1\",\"title\":{\"literalString\":\"Deploy\"},\"subtitle\":{\"literalString\":\"Step 1\"},\"timestamp\":{\"literalString\":\"2024-01-01T00:00:00Z\"},\"kind\":\"step\",\"state\":\"inProgress\",\"severity\":\"info\",\"icon\":{\"literalString\":\"bolt\"},\"contentChild\":\"content\",\"action\":{\"name\":\"open\"}}}}"), timelineItem);
+
+        var timelineGroup = A2ui.timelineGroup(
+            "group",
+            "group-1",
+            A2ui.stringRefLiteral("Release"),
+            A2ui.stringRefLiteral("v1.0"),
+            A2ui.childrenExplicit(List.of("item-1")),
+            A2ui.boolRefLiteral(false),
+            A2ui.numberRefLiteral(2),
+            "active"
+        );
+        assertEquals(parse("{\"id\":\"group\",\"component\":{\"TimelineGroup\":{\"groupId\":\"group-1\",\"title\":{\"literalString\":\"Release\"},\"summary\":{\"literalString\":\"v1.0\"},\"children\":{\"explicitList\":[\"item-1\"]},\"collapsed\":{\"literalBoolean\":false},\"badgeCount\":{\"literalNumber\":2.0},\"groupState\":\"active\"}}}"), timelineGroup);
+
+        var timelineLane = A2ui.timelineLane(
+            "lane",
+            "lane-1",
+            A2ui.stringRefLiteral("Primary"),
+            A2ui.childrenExplicit(List.of("item-1"))
+        );
+        assertEquals(parse("{\"id\":\"lane\",\"component\":{\"TimelineLane\":{\"laneId\":\"lane-1\",\"title\":{\"literalString\":\"Primary\"},\"children\":{\"explicitList\":[\"item-1\"]}}}}"), timelineLane);
+
         var audio = A2ui.audioPlayer("audio", A2ui.stringRefLiteral("https://example.com/audio.mp3"));
         assertEquals(parse("{\"id\":\"audio\",\"component\":{\"AudioPlayer\":{\"url\":{\"literalString\":\"https://example.com/audio.mp3\"}}}}"), audio);
 
