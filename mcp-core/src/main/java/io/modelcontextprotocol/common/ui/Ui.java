@@ -1,6 +1,6 @@
 package io.modelcontextprotocol.common.ui;
 
-import io.modelcontextprotocol.common.a2ui.A2ui;
+import io.modelcontextprotocol.common.uiwire.UiWire;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -23,13 +23,13 @@ public final class Ui {
     public static final class UiStringLiteral implements UiString {
         public final String value;
         public UiStringLiteral(String value) { this.value = value; }
-        public Map<String, Object> toRef() { return A2ui.stringRefLiteral(value); }
+        public Map<String, Object> toRef() { return UiWire.stringRefLiteral(value); }
     }
 
     public static final class UiStringPath implements UiString {
         public final String path;
         public UiStringPath(String path) { this.path = path; }
-        public Map<String, Object> toRef() { return A2ui.stringRefPath(path); }
+        public Map<String, Object> toRef() { return UiWire.stringRefPath(path); }
     }
 
     public sealed interface UiNumber permits UiNumberLiteral, UiNumberPath {
@@ -39,13 +39,13 @@ public final class Ui {
     public static final class UiNumberLiteral implements UiNumber {
         public final double value;
         public UiNumberLiteral(double value) { this.value = value; }
-        public Map<String, Object> toRef() { return A2ui.numberRefLiteral(value); }
+        public Map<String, Object> toRef() { return UiWire.numberRefLiteral(value); }
     }
 
     public static final class UiNumberPath implements UiNumber {
         public final String path;
         public UiNumberPath(String path) { this.path = path; }
-        public Map<String, Object> toRef() { return A2ui.numberRefPath(path); }
+        public Map<String, Object> toRef() { return UiWire.numberRefPath(path); }
     }
 
     public sealed interface UiBool permits UiBoolLiteral, UiBoolPath {
@@ -55,13 +55,13 @@ public final class Ui {
     public static final class UiBoolLiteral implements UiBool {
         public final boolean value;
         public UiBoolLiteral(boolean value) { this.value = value; }
-        public Map<String, Object> toRef() { return A2ui.boolRefLiteral(value); }
+        public Map<String, Object> toRef() { return UiWire.boolRefLiteral(value); }
     }
 
     public static final class UiBoolPath implements UiBool {
         public final String path;
         public UiBoolPath(String path) { this.path = path; }
-        public Map<String, Object> toRef() { return A2ui.boolRefPath(path); }
+        public Map<String, Object> toRef() { return UiWire.boolRefPath(path); }
     }
 
     public sealed interface UiStringArray permits UiStringArrayLiteral, UiStringArrayPath {
@@ -71,13 +71,13 @@ public final class Ui {
     public static final class UiStringArrayLiteral implements UiStringArray {
         public final List<String> values;
         public UiStringArrayLiteral(List<String> values) { this.values = values; }
-        public Map<String, Object> toRef() { return A2ui.stringArrayRefLiteral(values); }
+        public Map<String, Object> toRef() { return UiWire.stringArrayRefLiteral(values); }
     }
 
     public static final class UiStringArrayPath implements UiStringArray {
         public final String path;
         public UiStringArrayPath(String path) { this.path = path; }
-        public Map<String, Object> toRef() { return A2ui.stringArrayRefPath(path); }
+        public Map<String, Object> toRef() { return UiWire.stringArrayRefPath(path); }
     }
 
     public sealed interface UiActionValue permits UiActionPath, UiActionString, UiActionNumber, UiActionBool {
@@ -87,25 +87,25 @@ public final class Ui {
     public static final class UiActionPath implements UiActionValue {
         public final String path;
         public UiActionPath(String path) { this.path = path; }
-        public Map<String, Object> toValue() { return A2ui.actionValuePath(path); }
+        public Map<String, Object> toValue() { return UiWire.actionValuePath(path); }
     }
 
     public static final class UiActionString implements UiActionValue {
         public final String value;
         public UiActionString(String value) { this.value = value; }
-        public Map<String, Object> toValue() { return A2ui.actionValueLiteralString(value); }
+        public Map<String, Object> toValue() { return UiWire.actionValueLiteralString(value); }
     }
 
     public static final class UiActionNumber implements UiActionValue {
         public final double value;
         public UiActionNumber(double value) { this.value = value; }
-        public Map<String, Object> toValue() { return A2ui.actionValueLiteralNumber(value); }
+        public Map<String, Object> toValue() { return UiWire.actionValueLiteralNumber(value); }
     }
 
     public static final class UiActionBool implements UiActionValue {
         public final boolean value;
         public UiActionBool(boolean value) { this.value = value; }
-        public Map<String, Object> toValue() { return A2ui.actionValueLiteralBoolean(value); }
+        public Map<String, Object> toValue() { return UiWire.actionValueLiteralBoolean(value); }
     }
 
     public static final class UiAction {
@@ -118,13 +118,13 @@ public final class Ui {
         }
         Map<String, Object> toAction() {
             if (context.isEmpty()) {
-                return A2ui.action(name, List.of());
+                return UiWire.action(name, List.of());
             }
             List<Map<String, Object>> entries = new ArrayList<>();
             for (var entry : context.entrySet()) {
-                entries.add(A2ui.actionContextEntry(entry.getKey(), entry.getValue().toValue()));
+                entries.add(UiWire.actionContextEntry(entry.getKey(), entry.getValue().toValue()));
             }
-            return A2ui.action(name, entries);
+            return UiWire.action(name, entries);
         }
     }
 
@@ -377,19 +377,19 @@ public final class Ui {
         private Map<String, Object> renderChildren(UiChildren children) {
             if (children instanceof UiChildrenTemplate template) {
                 var templateId = renderWidget(template.template);
-                return A2ui.childrenTemplate(templateId, template.dataBinding);
+                return UiWire.childrenTemplate(templateId, template.dataBinding);
             }
             var ids = new ArrayList<String>();
             for (var child : ((UiChildrenItems) children).items) {
                 ids.add(renderWidget(child));
             }
-            return A2ui.childrenExplicit(ids);
+            return UiWire.childrenExplicit(ids);
         }
 
         String renderWidget(UiWidget widget) {
             var id = widget.id() != null ? widget.id() : nextId();
             var rendered = renderKind(widget);
-            var entry = A2ui.component(id, rendered.type, rendered.props, widget.weight());
+            var entry = UiWire.component(id, rendered.type, rendered.props, widget.weight());
             components.add(entry);
             return id;
         }

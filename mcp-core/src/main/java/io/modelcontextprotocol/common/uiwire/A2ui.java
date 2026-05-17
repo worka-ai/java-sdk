@@ -1,12 +1,12 @@
-package io.modelcontextprotocol.common.a2ui;
+package io.modelcontextprotocol.common.uiwire;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class A2ui {
-    private A2ui() {}
+public final class UiWire {
+    private UiWire() {}
 
     public static Map<String, Object> stringRefLiteral(String value) {
         return mapOf("literalString", value);
